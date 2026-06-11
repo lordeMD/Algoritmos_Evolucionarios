@@ -28,3 +28,22 @@ class GeneticAlgorithmCVRP:
         
         # Semente do gerador aleatório do NumPy para garantir reprodutibilidade
         np.random.seed(seed)
+        
+    def initialize_population(self):
+        """
+        Inicializa a população de cromossomos aleatórios.
+        Cada indivíduo é um Tour Gigante representado por uma permutação
+        dos índices dos clientes (de 1 a N).
+        
+        Returns:
+            list: Lista de listas, onde cada sublista é uma permutação dos clientes.
+        """
+        population = []
+        customers = list(range(1, self.instance.num_customers + 1))
+        
+        for _ in range(self.pop_size):
+            # Cria uma permutação aleatória dos clientes
+            ind = list(np.random.permutation(customers))
+            population.append(ind)
+            
+        return population
