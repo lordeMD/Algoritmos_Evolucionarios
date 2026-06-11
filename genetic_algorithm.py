@@ -47,3 +47,26 @@ class GeneticAlgorithmCVRP:
             population.append(ind)
             
         return population
+    
+    def evaluate_population(self, population):
+        """
+        Avalia cada indivíduo da população calculando o custo total (distância).
+        
+        Args:
+            population (list): População atual de cromossomos.
+            
+        Returns:
+            tuple: (costs, decoded_routes)
+                - costs (np.ndarray): Vetor contendo a distância total de cada cromossomo.
+                - decoded_routes (list): Lista com as rotas decodificadas de cada indivíduo.
+        """
+        costs = np.zeros(self.pop_size)
+        decoded_routes = []
+        
+        for idx, ind in enumerate(population):
+            routes, dist = self.decoder.decode(ind)
+            costs[idx] = dist
+            decoded_routes.append(routes)
+            
+        return costs, decoded_routes
+
