@@ -70,3 +70,26 @@ class GeneticAlgorithmCVRP:
             
         return costs, decoded_routes
 
+
+    def selection_tournament(self, population, costs, k=3):
+        """
+        Seleciona um indivíduo da população utilizando o método de Torneio Binário/K-ário.
+        Escolhe K indivíduos aleatórios e retorna o que tiver o menor custo (menor distância).
+        
+        Args:
+            population (list): População de cromossomos.
+            costs (np.ndarray): Custos associados a cada indivíduo.
+            k (int): Número de concorrentes no torneio (pressão seletiva).
+            
+        Returns:
+            list: O cromossomo vencedor do torneio.
+        """
+        # Escolhe K índices aleatórios da população
+        selected_indices = np.random.choice(self.pop_size, size=k, replace=False)
+        
+        # Identifica o índice do indivíduo com o menor custo (melhor aptidão)
+        best_idx = selected_indices[np.argmin(costs[selected_indices])]
+        
+        # Retorna uma cópia do cromossomo selecionado
+        return list(population[best_idx])
+
