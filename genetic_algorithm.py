@@ -194,4 +194,35 @@ class GeneticAlgorithmCVRP:
         global_best_chromosome = None
         global_best_routes = None
         generations_without_improvement = 0
+               
+        print("Iniciando a evolução...")
         
+        for gen in range(1, generations + 1):
+            # 2. Avaliação da população atual
+            costs, decoded_routes = self.evaluate_population(population)
+            
+            # Encontra o melhor indivíduo desta geração
+            best_gen_idx = np.argmin(costs)
+            best_gen_cost = costs[best_gen_idx]
+            avg_gen_cost = np.mean(costs)
+            
+            history_best.append(best_gen_cost)
+            history_avg.append(avg_gen_cost)
+            
+            # Atualiza o melhor global, se aplicável
+            if best_gen_cost < global_best_cost:
+                global_best_cost = best_gen_cost
+                global_best_chromosome = list(population[best_gen_idx])
+                global_best_routes = decoded_routes[best_gen_idx]
+                generations_without_improvement = 0
+            else:
+                generations_without_improvement += 1
+                
+            # Log de progresso a cada 10 gerações ou na primeira/última
+            if gen == 1 or gen % 10 == 0 or gen == generations:
+                print(f"Geração {gen:3d} | Melhor Custo: {best_gen_cost:7.2f} | Custo Médio: {avg_gen_cost:7.2f} | Sem Melhorias: {generations_without_improvement:3d}")
+            
+            # Critério de parada por estagnação
+            if generations_without_improvement >= early_stopping_generations:
+                print(f"\nCritério de parada atingido na geração {gen}: {early_stopping_generations} gerações consecutivas sem melhoria no melhor custo.")
+                break
