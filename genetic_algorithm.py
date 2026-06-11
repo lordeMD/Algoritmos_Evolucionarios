@@ -47,7 +47,7 @@ class GeneticAlgorithmCVRP:
             population.append(ind)
             
         return population
-    
+
     def evaluate_population(self, population):
         """
         Avalia cada indivíduo da população calculando o custo total (distância).
@@ -70,7 +70,6 @@ class GeneticAlgorithmCVRP:
             
         return costs, decoded_routes
 
-
     def selection_tournament(self, population, costs, k=3):
         """
         Seleciona um indivíduo da população utilizando o método de Torneio Binário/K-ário.
@@ -92,7 +91,6 @@ class GeneticAlgorithmCVRP:
         
         # Retorna uma cópia do cromossomo selecionado
         return list(population[best_idx])
-
 
     def crossover_ox(self, parent1, parent2):
         """
@@ -155,7 +153,7 @@ class GeneticAlgorithmCVRP:
         
         # Inverte o segmento selecionado
         individual[idx1:idx2] = individual[idx1:idx2][::-1]
-        
+
     def mutate_swap(self, individual):
         """
         Aplica a Mutação por Troca (Swap Mutation).
@@ -168,3 +166,32 @@ class GeneticAlgorithmCVRP:
         i, j = np.random.choice(n, size=2, replace=False)
         individual[i], individual[j] = individual[j], individual[i]
 
+    def evolve(self, generations=100, early_stopping_generations=50):
+        """
+        Executa o laço principal de evolução do Algoritmo Genético.
+        
+        Args:
+            generations (int): Número máximo de gerações.
+            early_stopping_generations (int): Critério de parada por estagnação.
+            
+        Returns:
+            dict: Resultados da evolução contendo:
+                - best_chromosome (list): Melhor cromossomo encontrado.
+                - best_routes (list): Melhores rotas decodificadas correspondentes.
+                - best_cost (float): Menor custo (distância) encontrado.
+                - history_best (list): Histórico de melhores custos por geração.
+                - history_avg (list): Histórico de custos médios por geração.
+        """
+        # 1. Inicializa população
+        population = self.initialize_population()
+        
+        # Históricos de métricas para plotagem e análise
+        history_best = []
+        history_avg = []
+        
+        # Variáveis de controle do melhor indivíduo global
+        global_best_cost = float('inf')
+        global_best_chromosome = None
+        global_best_routes = None
+        generations_without_improvement = 0
+        
