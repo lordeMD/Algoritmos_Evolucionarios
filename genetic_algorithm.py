@@ -194,7 +194,7 @@ class GeneticAlgorithmCVRP:
         global_best_chromosome = None
         global_best_routes = None
         generations_without_improvement = 0
-               
+        
         print("Iniciando a evolução...")
         
         for gen in range(1, generations + 1):
@@ -261,3 +261,14 @@ class GeneticAlgorithmCVRP:
                         new_population.append(child)
                         
             population = new_population
+            
+        print("\nEvolução finalizada!")
+        print(f"Melhor custo obtido: {global_best_cost:.2f}")
+        
+        return {
+            "best_chromosome": global_best_chromosome,
+            "best_routes": global_best_routes,
+            "best_cost": global_best_cost,
+            "history_best": history_best,
+            "history_avg": history_avg
+        }
