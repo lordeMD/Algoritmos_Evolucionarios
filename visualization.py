@@ -10,16 +10,7 @@ plt.rcParams['grid.color'] = '#F0F0F0'
 plt.rcParams['grid.linestyle'] = '--'
 
 def plot_routes(instance, routes, save_path=None):
-    """
-    Plota as rotas decodificadas em um gráfico bidimensional.
-    Exibe o depósito central, a localização de cada cliente com sua demanda,
-    e as rotas de cada veículo diferenciadas por cores harmônicas.
-    
-    Args:
-        instance (CVRPInstance): Instância do problema.
-        routes (list of lists): Rotas geradas (cada rota é uma lista de IDs de clientes).
-        save_path (str, opcional): Caminho do arquivo para salvar a imagem (ex: 'rotas.png').
-    """
+
     fig, ax = plt.subplots(figsize=(10, 8), dpi=150)
     ax.set_facecolor('#FAFAFA')
     
@@ -108,15 +99,7 @@ def plot_routes(instance, routes, save_path=None):
     plt.show()
 
 def plot_convergence(history_best, history_avg, save_path=None):
-    """
-    Plota as curvas de convergência do algoritmo ao longo das gerações.
-    Mostra o comportamento do melhor custo e do custo médio da população.
-    
-    Args:
-        history_best (list): Histórico do menor custo (distância) por geração.
-        history_avg (list): Histórico do custo médio por geração.
-        save_path (str, opcional): Caminho do arquivo para salvar a imagem.
-    """
+
     fig, ax = plt.subplots(figsize=(10, 5), dpi=150)
     ax.set_facecolor('#FAFAFA')
     
