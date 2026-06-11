@@ -109,9 +109,33 @@ class GeneticAlgorithmCVRP:
         """
         n = len(parent1)
         
+        def generate_child(p1, p2):
+            child = [-1] * n
+            
+            # 1. Seleciona dois pontos de corte aleatórios
+            idx1 = np.random.randint(0, n - 1)
+            idx2 = np.random.randint(idx1 + 1, n)
+            
+            # 2. Copia o segmento do p1 para o filho
+            child[idx1:idx2] = p1[idx1:idx2]
+            
+            # 3. Preenche o restante do filho usando a ordem relativa do p2
+            # Começamos a preencher logo após o segundo corte (ponto idx2)
+            current_pos = idx2
+            
+            # Cicla sobre os elementos do p2 começando a partir de idx2
+            p2_ordered = p2[idx2:] + p2[:idx2]
+            
+            for item in p2_ordered:
+                if item not in child:
+                    # Se alcançamos o final do vetor, voltamos ao início (circular)
+                    if current_pos >= n:
+                        current_pos = 0
+                    child[current_pos] = item
+                    current_pos += 1
+            return child
 
         child1 = generate_child(parent1, parent2)
         child2 = generate_child(parent2, parent1)
         
         return child1, child2
-
