@@ -93,3 +93,25 @@ class GeneticAlgorithmCVRP:
         # Retorna uma cópia do cromossomo selecionado
         return list(population[best_idx])
 
+
+    def crossover_ox(self, parent1, parent2):
+        """
+        Aplica o operador de Cruzamento Ordenado (OX - Ordered Crossover).
+        Específico para representações de permutação, pois preserva a ordem relativa
+        dos elementos e evita duplicatas.
+        
+        Args:
+            parent1 (list): Cromossomo do pai 1.
+            parent2 (list): Cromossomo do pai 2.
+            
+        Returns:
+            tuple: (child1, child2) Dois novos cromossomos filhos.
+        """
+        n = len(parent1)
+        
+
+        child1 = generate_child(parent1, parent2)
+        child2 = generate_child(parent2, parent1)
+        
+        return child1, child2
+
