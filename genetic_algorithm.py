@@ -139,3 +139,20 @@ class GeneticAlgorithmCVRP:
         child2 = generate_child(parent2, parent1)
         
         return child1, child2
+
+    def mutate_inversion(self, individual):
+        """
+        Aplica a Mutação por Inversão.
+        Escolhe dois pontos de corte aleatórios e inverte a ordem do segmento interno.
+        Altamente eficaz para problemas de rotas (semelhante ao movimento 2-opt).
+        
+        Args:
+            individual (list): Cromossomo a ser mutado (modificado in-place).
+        """
+        n = len(individual)
+        idx1 = np.random.randint(0, n - 1)
+        idx2 = np.random.randint(idx1 + 1, n)
+        
+        # Inverte o segmento selecionado
+        individual[idx1:idx2] = individual[idx1:idx2][::-1]
+
