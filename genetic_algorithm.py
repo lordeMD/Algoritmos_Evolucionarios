@@ -226,3 +226,38 @@ class GeneticAlgorithmCVRP:
             if generations_without_improvement >= early_stopping_generations:
                 print(f"\nCritério de parada atingido na geração {gen}: {early_stopping_generations} gerações consecutivas sem melhoria no melhor custo.")
                 break
+                
+            # 3. Construção da nova geração
+            new_population = []
+            
+            # 3.1 Elitismo: Preserva os E melhores indivíduos diretamente
+            sorted_indices = np.argsort(costs)
+            for idx in sorted_indices[:self.elitism_size]:
+                new_population.append(list(population[idx]))
+                
+            # 3.2 Laço reprodutivo (cruzamento e mutação)
+            while len(new_population) < self.pop_size:
+                # Seleção dos pais
+                parent1 = self.selection_tournament(population, costs)
+                parent2 = self.selection_tournament(population, costs)
+                
+                # Crossover
+                if np.random.rand() < self.crossover_rate:
+                    child1, child2 = self.crossover_ox(parent1, parent2)
+                else:
+                    child1, child2 = list(parent1), list(parent2)
+                    
+                # Mutação (aplicada a cada filho de forma independente)
+                for child in [child1, child2]:
+                    if np.random.rand() < self.mutation_rate:
+                        # 75% de probabilidade de mutação por inversão, 25% por troca (swap)
+                        if np.random.rand() < 0.75:
+                            self.mutate_inversion(child)
+                        else:
+                            self.mutate_swap(child)
+                            
+                    # Garante que adicionamos apenas até atingir pop_size
+                    if len(new_population) < self.pop_size:
+                        new_population.append(child)
+                        
+            population = new_population
