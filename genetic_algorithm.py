@@ -155,4 +155,16 @@ class GeneticAlgorithmCVRP:
         
         # Inverte o segmento selecionado
         individual[idx1:idx2] = individual[idx1:idx2][::-1]
+        
+    def mutate_swap(self, individual):
+        """
+        Aplica a Mutação por Troca (Swap Mutation).
+        Escolhe duas posições aleatórias e troca seus elementos.
+        
+        Args:
+            individual (list): Cromossomo a ser mutado (modificado in-place).
+        """
+        n = len(individual)
+        i, j = np.random.choice(n, size=2, replace=False)
+        individual[i], individual[j] = individual[j], individual[i]
 
